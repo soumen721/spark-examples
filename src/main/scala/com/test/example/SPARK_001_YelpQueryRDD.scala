@@ -8,12 +8,14 @@ import org.apache.spark.{SparkConf, SparkContext}
   * As a part of this demo we load the business table and obtain city with most
   * restaurant rated more than 3 stars.
   */
-object SPARK_001_YelpQueryRDD  {
+object SPARK_001_YelpQueryRDD extends App {
   // Specify the table name with a path that includes the full MapR-FS namespace
   // (e.g. /mapr/<cluster-name>/apps/business) or with an abbreviated path
   // (e.g. /apps/business)
   val tableName: String = "/mapr/maprdemo.mapr.io/apps/business"
-  def main(args: Array[String]): Unit = {
+
+  //def main(args: Array[String]): Unit = {
+    println("Table Name"+tableName)
     val spark = new SparkConf().setAppName("SPARK_001_YelpQueryRDD").setMaster("local[*]")
     val sc = new SparkContext(spark)
 
@@ -31,7 +33,7 @@ object SPARK_001_YelpQueryRDD  {
       .reduceByKey(_ + _)
       .map(x => (x._2, x._1))
       .sortByKey(ascending = false).first())
-  }
+  //}
 }
 
 

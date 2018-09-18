@@ -31,6 +31,13 @@
     </repositories>
 
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.apache.hadoop/hadoop-core -->
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-core</artifactId>
+            <version>0.20.2</version>
+        </dependency>
+
         <!-- scala-maven-plugin determines the Scala version to use from this dependency -->
         <dependency>
             <groupId>org.scala-lang</groupId>
@@ -61,6 +68,28 @@
 
     <build>
         <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.5.3</version>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.test.example.SPARK_001_YelpQueryRDD</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <!-- Configure maven-compiler-plugin to use the desired Java version -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
