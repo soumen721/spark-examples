@@ -1,41 +1,30 @@
 package com.test.example
 
 import com.fasterxml.jackson.annotation.{JsonIgnoreProperties, JsonProperty}
-import com.mapr.db.spark._
-import org.apache.spark.{SparkConf, SparkContext}
+import com.mapr.db.spark.sql._
+import org.apache.spark.sql.{DataFrame, SparkSession}
 
-/**
-  * As a part of this demo we load the business table and obtain city with most
-  * restaurant rated more than 3 stars.
-  */
-object SPARK_001_YelpQueryRDD extends App {
-  // Specify the table name with a path that includes the full MapR-FS namespace
-  // (e.g. /mapr/<cluster-name>/apps/business) or with an abbreviated path
-  // (e.g. /apps/business)
-  val tableName: String = "/mapr/maprdemo.mapr.io/apps/business"
+object SPARK_001_YelpQueryRDD {
 
-  //def main(args: Array[String]): Unit = {
-    println("Table Name"+tableName)
-    val spark = new SparkConf().setAppName("SPARK_001_YelpQueryRDD").setMaster("local[*]")
-    val sc = new SparkContext(spark)
+  def main(args: Array[String]): Unit = {
 
-    val businessRDD = sc
-      .loadFromMapRDB[Business](tableName).
-      where(field("stars") > 3)
+    val tableName: String = args(0)
+    println("Table Name" + tableName)
 
-    // Here's how you compare for equality. Note the three "=" signs:
-    sc.loadFromMapRDB[Business](tableName).where(field("stars") === 3).count
-    // Comparing for >= is pretty straightforward:
-    sc.loadFromMapRDB[Business](tableName).where(field("stars") >= 3).count
+    val sparkSession = SparkSession
+      .builder()
+      .appName("SPARK_001_YelpQueryRDD")
+      // .config("spark.sql.warehouse.dir", warehouseLocation)
+      //.enableHiveSupport()
+      .getOrCreate()
 
-    println(businessRDD
-      .map(business => (business.city, 1))
-      .reduceByKey(_ + _)
-      .map(x => (x._2, x._1))
-      .sortByKey(ascending = false).first())
-  //}
+    val df = sparkSession.loadFromMapRDB(tableName): DataFrame
+
+    df.schema
+    df.show
+
+  }
 }
-
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 case class Business (@JsonProperty("_id") id: String,
