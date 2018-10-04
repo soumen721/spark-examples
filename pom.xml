@@ -32,17 +32,18 @@
 
     <dependencies>
         <!-- https://mvnrepository.com/artifact/org.apache.hadoop/hadoop-core -->
-        <dependency>
+        <!--dependency>
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-core</artifactId>
             <version>0.20.2</version>
-        </dependency>
+        </dependency-->
 
         <!-- scala-maven-plugin determines the Scala version to use from this dependency -->
         <dependency>
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-library</artifactId>
             <version>${scala.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.apache.spark/spark-core -->
@@ -50,18 +51,27 @@
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-core_2.11</artifactId>
             <version>${spark.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-sql_2.11</artifactId>
             <version>${spark.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>com.mapr.db</groupId>
             <artifactId>maprdb-spark</artifactId>
             <version>${mapr.library.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.typesafe</groupId>
+            <artifactId>config</artifactId>
+            <version>1.3.1</version>
         </dependency>
 
     </dependencies>
